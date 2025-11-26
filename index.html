@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كتابي الأول لتعلم المفردات الإنجليزية</title>
+    
+    <!-- مكتبة Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- خطوط Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <!-- مكتبة Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f9ff;
+            background-image: radial-gradient(#bae6fd 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .eng-text { font-family: 'Fredoka', sans-serif; }
+        
+        /* أنيميشن بسيط للنصوص */
+        .pop-in { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- إطار الكتاب -->
+    <div id="book-card" class="max-w-2xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-yellow-400 flex flex-col transition-all duration-500 relative" style="min-height: 650px;">
+        
+        <!-- رأس الصفحة -->
+        <div class="bg-yellow-400 p-4 flex justify-between items-center text-yellow-900 z-10">
+            <h1 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+                <i class="fas fa-shapes"></i> تعلم الإنجليزية
+            </h1>
+            <div class="bg-white/30 px-4 py-1 rounded-full text-sm font-bold">
+                <span id="page-num">1</span> / <span id="total-pages">28</span>
+            </div>
+        </div>
+
+        <!-- منطقة المحتوى (متغيرة) -->
+        <div id="book-content" class="flex-grow p-6 flex flex-col items-center justify-center text-center w-full">
+            <!-- سيتم ملء المحتوى هنا بواسطة JS -->
+        </div>
+
+        <!-- أزرار التحكم -->
+        <div class="p-6 bg-white border-t border-gray-100 flex justify-between items-center mt-auto" id="controls">
+            <!-- الأزرار مخفية في صفحة الدخول وتظهر في باقي الصفحات -->
+            <button onclick="prevPage()" id="btn-prev" 
+                class="bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold py-3 px-6 rounded-full shadow transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                <i class="fas fa-arrow-right"></i> السابق
+            </button>
+            
+            <button onclick="nextPage()" id="btn-next" 
+                class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                التالي <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+    </div>
+
+<script>
+// =========================================================
+// متغير التحكم في الوصول (المفتاح السري)
+// ** خطوة هامة لجمعة: غيّر هذه القيمة إلى كلمة مرور جديدة قوية **
+// =========================================================
+const SECRET_PASSWORD = "JUmma_175282"; 
+const ACCESS_TOKEN_KEY = "book_access_granted";
+
+// ==============================
+// 1. بيانات الكتاب (تمت إضافة صفحة الدخول في البداية)
+// ==============================
+const pages = [
+    // --- 0. صفحة تسجيل الدخول (جديدة) ---
+    {
+        type: 'login',
+        title: "Access Required",
+        arabicTitle: "الوصول محمي",
+        bgColor: "bg-red-50"
+    },
+    // --- 1. الغلاف (تم التعديل لإضافة إشراف الأبلة) ---
+    {
+        type: 'cover',
+        title: "My First Book",
+        subtitle: "الحروف • الفواكه • الحيوانات • الألوان • الأرقام",
+        icon: "fa-star",
+        color: "text-yellow-500",
+        bgColor: "bg-sky-50",
+        authorName: "جمعة على عبد الرحمن", 
+        supervisor: "إشراف الأبلة: خديجة السائح", 
+        whatsapp: "911313949" 
+    },
+
+    // --- 2. مقدمة الكتاب ---
+    { 
+        type: 'introduction', 
+        title: "Welcome!", 
+        arabicTitle: "مرحباً بك في عالم التعلم!",
+        bgColor: "bg-teal-50" 
+    },
+
+    // --- 3. الفهرس ---
+    { 
+        type: 'index', 
+        title: "Book Index", 
+        arabicTitle: "فهرس الكتاب",
+        bgColor: "bg-pink-50" 
+    },
+    
+    // 4 - 27. باقي الصفحات
+    { type: 'section', title: "Letters", subtitle: "هيا نتعلم الحروف", bgColor: "bg-indigo-50", icon: "fa-font" },
+    { type: 'lesson', letter: "A", word: "Apple", translation: "تفاحة", icon: "fa-apple-whole", color: "text-red-500", example: "A red apple", bgColor: "bg-red-50" },
+    { type: 'lesson', letter: "B", word: "Ball", translation: "كرة", icon: "fa-futbol", color: "text-blue-500", example: "Big ball", bgColor: "bg-blue-50" },
+    { type: 'lesson', letter: "C", word: "Car", translation: "سيارة", icon: "fa-car", color: "text-orange-500", example: "Fast car", bgColor: "bg-orange-50" },
+    { type: 'section', title: "Fruits", subtitle: "الفواكه اللذيذة", bgColor: "bg-green-50", icon: "fa-carrot" },
+    { type: 'lesson', word: "Banana", translation: "موز", icon: "fa-moon", customIconRotate: true, color: "text-yellow-500", example: "Yellow Banana", bgColor: "bg-yellow-50" },
+    { type: 'lesson', word: "Orange", translation: "برتقال", icon: "fa-lemon", color: "text-orange-500", example: "Juicy Orange", bgColor: "bg-orange-50" },
+    { type: 'lesson', word: "Strawberry", translation: "فراولة", icon: "fa-heart", color: "text-red-600", example: "Sweet Strawberry", bgColor: "bg-red-50" },
+    { type: 'lesson', word: "Watermelon", translation: "بطيخ", icon: "fa-pizza-slice", color: "text-green-600", example: "Big Watermelon", bgColor: "bg-green-50" },
+    { type: 'section', title: "Animals", subtitle: "حيوانات المزرعة والغابة", bgColor: "bg-amber-50", icon: "fa-hippo" },
+    { type: 'lesson', word: "Dog", translation: "كلب", icon: "fa-dog", color: "text-amber-700", example: "A friendly dog", bgColor: "bg-amber-100" },
+    { type: 'lesson', word: "Elephant", translation: "فيل", icon: "fa-paw", color: "text-gray-500", example: "A big elephant", bgColor: "bg-gray-50" },
+    { type: 'lesson', word: "Bird", translation: "طائر", icon: "fa-crow", color: "text-sky-500", example: "A singing bird", bgColor: "bg-sky-100" },
+    { type: 'section', title: "Colors", subtitle: "ما هي ألوان قوس قزح؟", bgColor: "bg-pink-50", icon: "fa-palette" },
+    { type: 'color', word: "Red", translation: "أحمر", colorClass: "bg-red-600", example: "The apple is red", bgColor: "bg-red-50" },
+    { type: 'color', word: "Blue", translation: "أزرق", colorClass: "bg-blue-600", example: "The sky is blue", bgColor: "bg-blue-50" },
+    { type: 'color', word: "Yellow", translation: "أصفر", colorClass: "bg-yellow-500", example: "The sun is yellow", bgColor: "bg-yellow-50" },
+    { type: 'section', title: "Numbers", subtitle: "لنعد معاً من 1 إلى 5", bgColor: "bg-purple-50", icon: "fa-arrow-up-1-9" },
+    { type: 'number', number: "1", word: "One", translation: "واحد", color: "text-purple-600", example: "One star", bgColor: "bg-purple-50" },
+    { type: 'number', number: "2", word: "Two", translation: "اثنان", color: "text-pink-600", example: "Two eyes", bgColor: "bg-pink-50" },
+    { type: 'number', number: "3", word: "Three", translation: "ثلاثة", color: "text-indigo-600", example: "Three cars", bgColor: "bg-indigo-50" },
+    { type: 'number', number: "4", word: "Four", translation: "أربعة", color: "text-teal-600", example: "Four legs", bgColor: "bg-teal-50" },
+    { type: 'number', number: "5", word: "Five", translation: "خمسة", color: "text-blue-600", example: "Five fingers", bgColor: "bg-blue-50" },
+
+    {
+        type: 'end',
+        title: "Good Job!",
+        subtitle: "أحسنت! لقد تعلمت الكثير اليوم.",
+        icon: "fa-medal",
+        bgColor: "bg-yellow-100"
+    }
+];
+
+let currentPageIndex = 0;
+
+// ==============================
+// 2. دالة العرض (المنطق الرئيسي)
+// ==============================
+function renderPage() {
+    const contentDiv = document.getElementById('book-content');
+    const card = document.getElementById('book-card');
+    const controlsDiv = document.getElementById('controls');
+    const page = pages[currentPageIndex];
+
+    // **التحقق من الدخول قبل العرض**
+    if (page.type !== 'login' && sessionStorage.getItem(ACCESS_TOKEN_KEY) !== 'true') {
+        // إذا كان المستخدم يحاول الوصول لأي صفحة غير الدخول ولم يقم بالدخول، نرسله لصفحة الدخول.
+        currentPageIndex = 0;
+        renderPage();
+        return;
+    }
+
+    // تحديث العداد والأزرار
+    document.getElementById('page-num').innerText = currentPageIndex + 1;
+    document.getElementById('total-pages').innerText = pages.length;
+    document.getElementById('btn-prev').disabled = currentPageIndex === 0;
+    document.getElementById('btn-next').disabled = currentPageIndex === pages.length - 1;
+
+    // إظهار/إخفاء الأزرار: إخفاؤها في صفحة الدخول والتحكم بظهورها في صفحة النهاية
+    const isControlVisible = page.type !== 'login' && page.type !== 'end';
+    controlsDiv.style.display = isControlVisible ? 'flex' : 'none';
+    
+    // في صفحة النهاية، لا نستخدم الأزرار العادية بل زر "اقرأ مرة أخرى" داخل المحتوى
+    if(page.type === 'end') {
+        controlsDiv.style.display = 'none'; 
+    }
+
+    // تحديث لون الخلفية (إزالة الألوان القديمة وإضافة الجديدة)
+    card.className = card.className.replace(/bg-\w+-\d+/g, ''); 
+    card.classList.add('max-w-2xl', 'w-full', 'bg-white', 'rounded-3xl', 'shadow-2xl', 'overflow-hidden', 'border-8', 'border-yellow-400', 'flex', 'flex-col', 'transition-all', 'duration-500', 'relative', page.bgColor);
+
+    let html = `<div class="pop-in w-full flex flex-col items-center">`;
+
+    // --- 0. قالب تسجيل الدخول (جديد) ---
+    if (page.type === "login") {
+        html += `
+            <div class="w-32 h-32 bg-red-100 rounded-full flex items-center justify-center shadow-lg mb-6">
+                <i class="fas fa-lock text-6xl text-red-600"></i>
+            </div>
+            <h2 class="text-5xl font-bold text-red-700 mb-4">${page.arabicTitle}</h2>
+            <p class="text-xl text-gray-600 mb-8 max-w-md">
+                هذا الكتاب محمي لحقوق الملكية الفكرية الخاصة بـ ${pages[1].authorName}. 
+                الرجاء إدخال كلمة المرور الممنوحة لك من قبل جمعة للمتابعة.
+            </p>
+            <div class="w-full max-w-sm">
+                <!-- أضفنا onkeydown لتسجيل الدخول بالضغط على Enter -->
+                <input type="password" id="password-input" 
+                       class="w-full p-3 mb-4 text-center border-2 border-gray-300 rounded-lg focus:outline-none focus:border-red-500 transition" 
+                       placeholder="كلمة المرور"
+                       onkeydown="if(event.key === 'Enter') handleLogin()">
+                <button onclick="handleLogin()" 
+                        class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg shadow-lg transition transform hover:scale-105">
+                    دخول الكتاب <i class="fas fa-sign-in-alt mr-2"></i>
+                </button>
+                <p id="error-message" class="text-red-600 mt-3 hidden">كلمة المرور غير صحيحة. حاول مرة أخرى.</p>
+            </div>
+        `;
+    }
+
+    // --- 1. قالب الغلاف ---
+    else if (page.type === "cover") {
+        html += `
+            <div class="mb-8 animate-bounce">
+                <i class="fas ${page.icon} text-9xl ${page.color} drop-shadow-md"></i>
+            </div>
+            <h1 class="text-6xl font-bold text-blue-600 mb-4 eng-text">${page.title}</h1>
+            <p class="text-2xl text-gray-600 font-bold mb-12">${page.subtitle}</p>
+            
+            <!-- معلومات الإشراف والمؤلف الجديدة -->
+            <div class="absolute bottom-12 left-0 right-0 p-4 border-t border-yellow-300">
+                <!-- إشراف الأبلة -->
+                <p class="text-lg font-bold text-gray-700">${page.supervisor}</p>
+                <!-- اسم الطالب -->
+                <p class="text-xl font-bold text-blue-800 my-1">${page.authorName}</p>
+                <!-- رقم الواتساب -->
+                <p class="text-sm text-gray-500 flex items-center justify-center gap-2 mt-1">
+                    <i class="fab fa-whatsapp text-green-500"></i> ${page.whatsapp}
+                </p>
+            </div>
+        `;
+    }
+
+    // --- 1.5 قالب المقدمة ---
+    else if (page.type === "introduction") {
+        html += `
+            <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-6">
+                <i class="fas fa-book-reader text-6xl text-teal-600"></i>
+            </div>
+            <h2 class="text-5xl font-bold text-teal-700 mb-4">${page.arabicTitle}</h2>
+            <p class="text-xl text-gray-600 max-w-md">
+                هذا الكتاب هو دليلك الأول لاكتشاف المفردات الإنجليزية الأساسية بطريقة ممتعة وتفاعلية. ستجد هنا الحروف، الأرقام، أسماء الفواكه، الحيوانات، والألوان، مدعومة بالنطق الصحيح لمساعدتك على التعلم السريع!
+            </p>
+        `;
+    }
+
+    // --- 2. قالب الفهرس ---
+    else if (page.type === "index") {
+        const sections = pages.slice(4).filter(p => p.type === 'section').map(p => ({
+            title: p.title,
+            icon: p.icon,
+            bgColor: p.bgColor.replace('-50', '-100')
+        }));
+
+        let indexList = sections.map(section => `
+            <li class="p-3 ${section.bgColor} rounded-xl flex items-center gap-4 shadow-sm">
+                <i class="fas ${section.icon} text-xl text-gray-700 w-6 text-center"></i>
+                <span class="text-xl font-semibold eng-text text-gray-800">${section.title}</span>
+            </li>
+        `).join('');
+
+        html += `
+            <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-6">
+                <i class="fas fa-list-ol text-6xl text-pink-600"></i>
+            </div>
+            <h2 class="text-5xl font-bold text-pink-700 mb-8">${page.arabicTitle}</h2>
+            <ul class="space-y-4 w-full max-w-xs md:max-w-md">
+                ${indexList}
+            </ul>
+        `;
+    }
+
+    // --- 3. قالب الفاصل (عنوان القسم) ---
+    else if (page.type === "section") {
+        html += `
+            <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-6">
+                <i class="fas ${page.icon} text-6xl text-gray-700"></i>
+            </div>
+            <h2 class="text-5xl font-bold text-gray-800 mb-4 eng-text">${page.title}</h2>
+            <p class="text-2xl text-gray-500">${page.subtitle}</p>
+        `;
+    }
+
+    // --- 4. قالب الدرس (فواكه / حروف / حيوانات) ---
+    else if (page.type === "lesson") {
+        const rotateClass = page.customIconRotate ? '-rotate-45' : '';
+        html += `
+            <div onclick="speak('${page.word}')" class="bg-white w-48 h-48 rounded-full shadow-xl mb-6 flex items-center justify-center border-4 border-dashed border-gray-200 cursor-pointer hover:scale-105 transition-transform">
+                <i class="fas ${page.icon} text-8xl ${page.color} ${rotateClass}"></i>
+            </div>
+
+            <h2 onclick="speak('${page.word}')" class="text-6xl font-bold text-gray-800 mb-2 eng-text cursor-pointer hover:text-blue-500 transition">
+                ${page.word} <i class="fas fa-volume-high text-2xl text-gray-400"></i>
+            </h2>
+            <p class="text-3xl text-gray-500 font-bold mb-8">${page.translation}</p>
+
+            <div onclick="speak('${page.example}')" class="bg-white/60 px-8 py-3 rounded-2xl cursor-pointer hover:bg-white transition">
+                <p class="text-xl text-gray-600 eng-text">"${page.example}"</p>
+            </div>
+        `;
+    }
+
+    // --- 5. قالب الألوان ---
+    else if (page.type === "color") {
+        html += `
+            <div onclick="speak('${page.word}')" class="w-48 h-48 ${page.colorClass} rounded-full shadow-2xl mb-6 flex items-center justify-center border-8 border-white ring-4 ring-offset-2 ring-current cursor-pointer hover:scale-105 transition-transform duration-300">
+                <i class="fas fa-palette text-5xl text-white opacity-80"></i>
+            </div>
+
+            <h2 onclick="speak('${page.word}')" class="text-6xl font-bold text-gray-800 mb-2 eng-text cursor-pointer hover:text-blue-500 transition">
+                ${page.word} <i class="fas fa-volume-high text-2xl text-gray-400"></i>
+            </h2>
+            <p class="text-3xl text-gray-500 font-bold mb-8">${page.translation}</p>
+
+            <div onclick="speak('${page.example}')" class="bg-white/60 px-8 py-3 rounded-2xl cursor-pointer hover:bg-white transition">
+                <p class="text-xl text-gray-600 eng-text">"${page.example}"</p>
+            </div>
+        `;
+    }
+
+    // --- 6. قالب الأرقام ---
+    else if (page.type === "number") {
+        html += `
+            <div onclick="speak('${page.word}')" class="relative group cursor-pointer mb-6">
+                <!-- عرض الرقم بشكل كبير جداً -->
+                <span class="text-[150px] font-bold ${page.color} eng-text leading-none drop-shadow-sm group-hover:scale-110 transition-transform block">
+                    ${page.number}
+                </span>
+            </div>
+
+            <h2 onclick="speak('${page.word}')" class="text-5xl font-bold text-gray-800 mb-2 eng-text cursor-pointer hover:text-blue-500">
+                ${page.word} <i class="fas fa-volume-high text-2xl text-gray-400"></i>
+            </h2>
+            <p class="text-3xl text-gray-500 font-bold mb-6">${page.translation}</p>
+            
+            <div onclick="speak('${page.example}')" class="bg-white px-6 py-2 rounded-lg shadow-sm cursor-pointer">
+                <p class="text-lg text-gray-500 eng-text">${page.example}</p>
+            </div>
+        `;
+    }
+
+
+    // --- 7. صفحة النهاية ---
+    else if (page.type === "end") {
+        html += `
+            <i class="fas fa-trophy text-8xl text-yellow-500 mb-6 animate-pulse"></i>
+            <h1 class="text-5xl font-bold text-green-600 mb-4 eng-text">${page.title}</h1>
+            <p class="text-xl text-gray-600 mb-8">${page.subtitle}</p>
+            <button onclick="restartBook()" class="bg-green-500 text-white px-8 py-3 rounded-full text-lg font-bold shadow hover:bg-green-600 transition">
+                اقرأ مرة أخرى ↻
+            </button>
+        `;
+    }
+
+
+    html += `</div>`;
+    contentDiv.innerHTML = html;
+}
+
+// ==============================
+// 3. دوال التحكم
+// ==============================
+
+// دالة لمعالجة محاولة تسجيل الدخول
+function handleLogin() {
+    const input = document.getElementById('password-input');
+    const errorMessage = document.getElementById('error-message');
+    
+    // التحقق من كلمة المرور
+    if (input.value === SECRET_PASSWORD) {
+        // كلمة المرور صحيحة: نمنح رمز الوصول وننتقل للصفحة التالية
+        sessionStorage.setItem(ACCESS_TOKEN_KEY, 'true');
+        errorMessage.classList.add('hidden');
+        currentPageIndex = 1; // الانتقال إلى صفحة الغلاف (الصفحة رقم 1 بعد صفحة الدخول)
+        renderPage();
+    } else {
+        // كلمة المرور غير صحيحة: نظهر رسالة خطأ
+        errorMessage.classList.remove('hidden');
+        input.value = ''; // مسح الإدخال
+    }
+}
+
+function nextPage() { 
+    if (currentPageIndex < pages.length - 1) { 
+        currentPageIndex++; 
+        renderPage(); 
+    } 
+}
+
+function prevPage() { 
+    // لا يمكن العودة إلى صفحة الدخول (الصفحة 0) بعد الدخول، لذلك نتوقف عند الصفحة 1 (الغلاف)
+    if (currentPageIndex > 1) { 
+        currentPageIndex--; 
+        renderPage(); 
+    } 
+}
+
+function restartBook() { 
+    currentPageIndex = 1; // البدء من الغلاف بعد النهاية
+    renderPage(); 
+}
+
+// دالة النطق الإنجليزي
+function speak(text) {
+    if(!text) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US"; // لغة النطق الإنجليزية
+    u.rate = 0.8; 
+    window.speechSynthesis.speak(u);
+}
+
+// عند تحميل الصفحة، نتحقق أولاً مما إذا كان المستخدم لديه إذن الوصول (عن طريق الجلسة السابقة)
+window.onload = function() {
+    if (sessionStorage.getItem(ACCESS_TOKEN_KEY) === 'true') {
+        currentPageIndex = 1; // إذا كان لديه إذن، ابدأ من صفحة الغلاف
+    } else {
+        currentPageIndex = 0; // إذا لم يكن لديه إذن، ابدأ من صفحة الدخول
+    }
+    renderPage();
+};
+
+</script>
+</body>
+</html>
