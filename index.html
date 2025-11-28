@@ -33,7 +33,7 @@
 <body class="min-h-screen flex items-center justify-center p-4">
 
     <!-- إطار الكتاب -->
-    <div id="book-card" class="max-w-2xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-yellow-400 flex flex-col transition-all duration-500 relative" style="min-height: 650px;">
+    <div id="book-card" class="max-w-2xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden border-8 border-yellow-400 flex flex-col transition-all duration-500 relative" style="min-height: 700px;">
         
         <!-- رأس الصفحة -->
         <div class="bg-yellow-400 p-4 flex justify-between items-center text-yellow-900 z-10">
@@ -46,7 +46,7 @@
         </div>
 
         <!-- منطقة المحتوى (متغيرة) -->
-        <div id="book-content" class="flex-grow p-6 flex flex-col items-center justify-center text-center w-full">
+        <div id="book-content" class="flex-grow p-6 flex flex-col items-center justify-center text-center w-full relative">
             <!-- سيتم ملء المحتوى هنا بواسطة JS -->
         </div>
 
@@ -65,25 +65,27 @@
     </div>
 
 <script>
-// =========================================================
-// تمت إزالة منطق كلمة المرور بناءً على طلبك
-// =========================================================
 
 // ==============================
-// 1. بيانات الكتاب (بدون صفحة الدخول)
+// 1. بيانات الكتاب
 // ==============================
 const pages = [
-    // --- 0. الغلاف (أصبح هو الصفحة الأولى) ---
+    // --- 0. الغلاف (تم التعديل ليظهر "تأليف وتصميم" بدلاً من "إعداد الطالب") ---
     {
-        type: 'cover',
-        title: "My First Book",
-        subtitle: "الحروف • الفواكه • الحيوانات • الألوان • الأرقام",
-        icon: "fa-star",
-        color: "text-yellow-500",
-        bgColor: "bg-sky-50",
-        authorName: "جمعة على عبد الرحمن", 
-        supervisor: "إشراف الأبلة: خديجة ", 
-        whatsapp: "911313949" 
+    type: 'cover',
+    title: "My First Book",
+    subtitle: "الحروف • الفواكه • الحيوانات • الألوان • الأرقام",
+    icon: "fa-star",
+    color: "text-yellow-500",
+    bgColor: "bg-sky-50",
+    
+    // بيانات المؤلف
+    authorName: "جمعة على عبد الرحمن",
+    whatsapp: "0911313949",
+    
+    // بيانات المشرفة
+    supervisor: "إشراف الأبلة: خديجة",
+    supervisorPhone: "0923546770"
     },
 
     // --- 1. مقدمة الكتاب ---
@@ -102,7 +104,7 @@ const pages = [
         bgColor: "bg-pink-50" 
     },
     
-    // 3 - 26. باقي الصفحات (نفس المحتوى السابق)
+    // باقي الصفحات
     { type: 'section', title: "Letters", subtitle: "هيا نتعلم الحروف", bgColor: "bg-indigo-50", icon: "fa-font" },
     { type: 'lesson', letter: "A", word: "Apple", translation: "تفاحة", icon: "fa-apple-whole", color: "text-red-500", example: "A red apple", bgColor: "bg-red-50" },
     { type: 'lesson', letter: "B", word: "Ball", translation: "كرة", icon: "fa-futbol", color: "text-blue-500", example: "Big ball", bgColor: "bg-blue-50" },
@@ -147,41 +149,50 @@ function renderPage() {
     const controlsDiv = document.getElementById('controls');
     const page = pages[currentPageIndex];
 
-    // تحديث العداد والأزرار (ملاحظة: عدد الصفحات الكلي أصبح أقل بواحدة)
     document.getElementById('page-num').innerText = currentPageIndex + 1;
     document.getElementById('total-pages').innerText = pages.length;
     document.getElementById('btn-prev').disabled = currentPageIndex === 0;
     document.getElementById('btn-next').disabled = currentPageIndex === pages.length - 1;
 
-    // إظهار/إخفاء الأزرار: إخفاؤها في صفحة النهاية فقط
     const isControlVisible = page.type !== 'end';
     controlsDiv.style.display = isControlVisible ? 'flex' : 'none';
     
-    // تحديث لون الخلفية (إزالة الألوان القديمة وإضافة الجديدة)
     card.className = card.className.replace(/bg-\w+-\d+/g, ''); 
     card.classList.add('max-w-2xl', 'w-full', 'bg-white', 'rounded-3xl', 'shadow-2xl', 'overflow-hidden', 'border-8', 'border-yellow-400', 'flex', 'flex-col', 'transition-all', 'duration-500', 'relative', page.bgColor);
 
     let html = `<div class="pop-in w-full flex flex-col items-center">`;
 
-    // --- 0. قالب الغلاف (الصفحة 0 الآن) ---
+    // --- 0. قالب الغلاف (معدل) ---
     if (page.type === "cover") {
         html += `
-            <div class="mb-8 animate-bounce">
+            <div class="mb-4 animate-bounce">
                 <i class="fas ${page.icon} text-9xl ${page.color} drop-shadow-md"></i>
             </div>
-            <h1 class="text-6xl font-bold text-blue-600 mb-4 eng-text">${page.title}</h1>
-            <p class="text-2xl text-gray-600 font-bold mb-12">${page.subtitle}</p>
+            <h1 class="text-6xl font-bold text-blue-600 mb-2 eng-text">${page.title}</h1>
+            <p class="text-xl text-gray-600 font-bold mb-8">${page.subtitle}</p>
             
-            <!-- معلومات الإشراف والمؤلف -->
-            <div class="absolute bottom-12 left-0 right-0 p-4 border-t border-yellow-300">
-                <!-- إشراف الأبلة -->
-                <p class="text-lg font-bold text-gray-700">${page.supervisor}</p>
-                <!-- اسم الطالب -->
-                <p class="text-xl font-bold text-blue-800 my-1">${page.authorName}</p>
-                <!-- رقم الواتساب -->
-                <p class="text-sm text-gray-500 flex items-center justify-center gap-2 mt-1">
-                    <i class="fab fa-whatsapp text-green-500"></i> ${page.whatsapp}
-                </p>
+            <!-- حاوية المعلومات السفلية -->
+            <div class="w-full bg-white/60 rounded-xl p-4 border-t-2 border-yellow-300 backdrop-blur-sm">
+                <div class="grid grid-cols-1 gap-4 divide-y divide-yellow-200">
+                    
+                    <!-- قسم المشرفة -->
+                    <div class="pb-2">
+                        <p class="text-lg font-bold text-gray-700">${page.supervisor}</p>
+                        <p class="text-sm text-gray-500 flex items-center justify-center gap-2 mt-1" dir="ltr">
+                            <span class="font-mono">${page.supervisorPhone}</span> <i class="fas fa-phone text-gray-400"></i> 
+                        </p>
+                    </div>
+
+                    <!-- قسم المؤلف (تم تغيير النص هنا) -->
+                    <div class="pt-2">
+                        <p class="text-sm text-gray-500 mb-1">تأليف وتصميم:</p> 
+                        <p class="text-xl font-bold text-blue-800">${page.authorName}</p>
+                        <p class="text-sm text-gray-500 flex items-center justify-center gap-2 mt-1" dir="ltr">
+                             <span class="font-mono">${page.whatsapp}</span> <i class="fab fa-whatsapp text-green-500"></i>
+                        </p>
+                    </div>
+
+                </div>
             </div>
         `;
     }
@@ -201,8 +212,6 @@ function renderPage() {
 
     // --- 2. قالب الفهرس ---
     else if (page.type === "index") {
-        // بما أن صفحة الدخول حُذفت، أصبح الفهرس يبدأ من الصفحة 3، لذا يجب تعديل pages.slice(3) 
-        // أو الأفضل، استخدام الفلترة كما في الكود الأصلي لكن مع تعديل بسيط لتطابق الفهرس الجديد
         const sections = pages.slice(3).filter(p => p.type === 'section').map(p => ({
             title: p.title,
             icon: p.icon,
@@ -318,8 +327,6 @@ function renderPage() {
 // 3. دوال التحكم
 // ==============================
 
-// تم حذف دالة handleLogin
-
 function nextPage() { 
     if (currentPageIndex < pages.length - 1) { 
         currentPageIndex++; 
@@ -328,7 +335,6 @@ function nextPage() {
 }
 
 function prevPage() { 
-    // أصبح بإمكان المستخدم العودة إلى الصفحة 0 (صفحة الغلاف)
     if (currentPageIndex > 0) { 
         currentPageIndex--; 
         renderPage(); 
@@ -336,7 +342,7 @@ function prevPage() {
 }
 
 function restartBook() { 
-    currentPageIndex = 0; // البدء من الغلاف بعد النهاية
+    currentPageIndex = 0;
     renderPage(); 
 }
 
@@ -345,12 +351,11 @@ function speak(text) {
     if(!text) return;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "en-US"; // لغة النطق الإنجليزية
+    u.lang = "en-US";
     u.rate = 0.8; 
     window.speechSynthesis.speak(u);
 }
 
-// عند تحميل الصفحة، يبدأ الكتاب فوراً من صفحة الغلاف (الصفحة 0)
 window.onload = function() {
     currentPageIndex = 0;
     renderPage();
