@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>كتابي الأول لتعلم المفردات الإنجليزية</title>
+    <title>كتابي الأول لتعلم المفردات الإنجليزية - كود منظم ومحمي</title>
     
     <!-- مكتبة Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        /* إعداد الخطوط والخلفية */
         body {
             font-family: 'Cairo', sans-serif;
             background-color: #f0f9ff;
@@ -26,6 +27,15 @@
         @keyframes popIn {
             from { opacity: 0; transform: scale(0.5); }
             to { opacity: 1; transform: scale(1); }
+        }
+
+        /* ستايل مخصص لبطاقة الصورة/الأيقونة */
+        .lesson-icon-card {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .lesson-icon-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
     </style>
 </head>
@@ -41,13 +51,14 @@
                 <i class="fas fa-shapes"></i> تعلم الإنجليزية
             </h1>
             <div class="bg-white/30 px-4 py-1 rounded-full text-sm font-bold">
-                <span id="page-num">1</span> / <span id="total-pages">27</span>
+                <span id="page-num">1</span> / <span id="total-pages">49</span>
             </div>
         </div>
 
         <!-- منطقة المحتوى (متغيرة) -->
         <div id="book-content" class="flex-grow p-6 flex flex-col items-center justify-center text-center w-full relative">
             <!-- سيتم ملء المحتوى هنا بواسطة JS -->
+            <div class="pop-in text-gray-500">جاري تحميل المحتوى...</div>
         </div>
 
         <!-- أزرار التحكم -->
@@ -67,10 +78,10 @@
 <script>
 
 // ==============================
-// 1. بيانات الكتاب
+// 1. بيانات الكتاب (تم تحديث قسم الحروف بالكامل)
 // ==============================
 const pages = [
-    // --- 0. الغلاف (تم التعديل ليظهر "تأليف وتصميم" بدلاً من "إعداد الطالب") ---
+    // --- 0. الغلاف ---
     {
     type: 'cover',
     title: "My First Book",
@@ -78,12 +89,8 @@ const pages = [
     icon: "fa-star",
     color: "text-yellow-500",
     bgColor: "bg-sky-50",
-    
-    // بيانات المؤلف
     authorName: "جمعة على عبد الرحمن",
-    whatsapp: "0911313949",
-    
-    // بيانات المشرفة
+    whatsapp: "+218911313949",
     supervisor: "إشراف الأبلة: خديجة",
     supervisorPhone: "0923546770"
     },
@@ -104,24 +111,54 @@ const pages = [
         bgColor: "bg-pink-50" 
     },
     
-    // باقي الصفحات
+    // --- قسم الحروف (A-Z) ---
     { type: 'section', title: "Letters", subtitle: "هيا نتعلم الحروف", bgColor: "bg-indigo-50", icon: "fa-font" },
     { type: 'lesson', letter: "A", word: "Apple", translation: "تفاحة", icon: "fa-apple-whole", color: "text-red-500", example: "A red apple", bgColor: "bg-red-50" },
-    { type: 'lesson', letter: "B", word: "Ball", translation: "كرة", icon: "fa-futbol", color: "text-blue-500", example: "Big ball", bgColor: "bg-blue-50" },
-    { type: 'lesson', letter: "C", word: "Car", translation: "سيارة", icon: "fa-car", color: "text-orange-500", example: "Fast car", bgColor: "bg-orange-50" },
+    { type: 'lesson', letter: "B", word: "Bird", translation: "طائر", icon: "fa-dove", color: "text-sky-600", example: "The bird is flying", bgColor: "bg-sky-50" },
+    { type: 'lesson', letter: "C", word: "Cat", translation: "قطة", icon: "fa-cat", color: "text-pink-500", example: "A cute cat", bgColor: "bg-pink-50" },
+    { type: 'lesson', letter: "D", word: "Dog", translation: "كلب", icon: "fa-dog", color: "text-amber-700", example: "A loyal dog", bgColor: "bg-amber-50" },
+    { type: 'lesson', letter: "E", word: "Egg", translation: "بيضة", icon: "fa-egg", color: "text-yellow-500", example: "Boiled egg", bgColor: "bg-yellow-50" },
+    { type: 'lesson', letter: "F", word: "Fish", translation: "سمكة", icon: "fa-fish", color: "text-blue-500", example: "A blue fish", bgColor: "bg-blue-50" },
+    { type: 'lesson', letter: "G", word: "Giraffe", translation: "زرافة", icon: "fa-hippo", color: "text-orange-500", example: "Tall giraffe", bgColor: "bg-orange-50" },
+    { type: 'lesson', letter: "H", word: "House", translation: "منزل", icon: "fa-house", color: "text-green-600", example: "My small house", bgColor: "bg-green-50" },
+    { type: 'lesson', letter: "I", word: "Ice Cream", translation: "بوظة", icon: "fa-ice-cream", color: "text-pink-400", example: "Cold ice cream", bgColor: "bg-pink-50" },
+    { type: 'lesson', letter: "J", word: "Jellyfish", translation: "قنديل البحر", icon: "fa-jellyfish", color: "text-blue-400", example: "Floating jellyfish", bgColor: "bg-blue-50" },
+    { type: 'lesson', letter: "K", word: "Key", translation: "مفتاح", icon: "fa-key", color: "text-yellow-600", example: "Open the key", bgColor: "bg-yellow-50" },
+    { type: 'lesson', letter: "L", word: "Lion", translation: "أسد", icon: "fa-lion", color: "text-orange-700", example: "A strong lion", bgColor: "bg-orange-50" },
+    { type: 'lesson', letter: "M", word: "Moon", translation: "قمر", icon: "fa-moon", color: "text-slate-500", example: "The moon is shining", bgColor: "bg-slate-50" },
+    { type: 'lesson', letter: "N", word: "Nest", translation: "عش", icon: "fa-house-chimney-crack", color: "text-amber-700", example: "Bird's nest", bgColor: "bg-amber-50" },
+    { type: 'lesson', letter: "O", word: "Owl", translation: "بومة", icon: "fa-owl", color: "text-lime-600", example: "The owl flies", bgColor: "bg-lime-50" },
+    { type: 'lesson', letter: "P", word: "Pencil", translation: "قلم رصاص", icon: "fa-pencil", color: "text-indigo-600", example: "Write with a pencil", bgColor: "bg-indigo-50" },
+    { type: 'lesson', letter: "Q", word: "Queen", translation: "ملكة", icon: "fa-chess-queen", color: "text-purple-600", example: "The beautiful queen", bgColor: "bg-purple-50" },
+    { type: 'lesson', letter: "R", word: "Robot", translation: "إنسان آلي", icon: "fa-robot", color: "text-gray-600", example: "The friendly robot", bgColor: "bg-gray-50" },
+    { type: 'lesson', letter: "S", word: "Sun", translation: "شمس", icon: "fa-sun", color: "text-orange-400", example: "The hot sun", bgColor: "bg-orange-50" },
+    { type: 'lesson', letter: "T", word: "Train", translation: "قطار", icon: "fa-train-subway", color: "text-red-700", example: "Riding the train", bgColor: "bg-red-50" },
+    { type: 'lesson', letter: "U", word: "Umbrella", translation: "مظلة", icon: "fa-umbrella", color: "text-cyan-600", example: "Use an umbrella", bgColor: "bg-cyan-50" },
+    { type: 'lesson', letter: "V", word: "Vase", translation: "مزهرية", icon: "fa-glass-water", color: "text-fuchsia-600", example: "A flower vase", bgColor: "bg-fuchsia-50" },
+    { type: 'lesson', letter: "W", word: "Whale", translation: "حوت", icon: "fa-fish-fins", color: "text-blue-700", example: "The giant whale", bgColor: "bg-blue-50" },
+    { type: 'lesson', letter: "X", word: "Xylophone", translation: "إكسيلوفون", icon: "fa-music", color: "text-emerald-500", example: "Play the xylophone", bgColor: "bg-emerald-50" },
+    { type: 'lesson', letter: "Y", word: "Yawn", translation: "تثاؤب", icon: "fa-face-tired", color: "text-yellow-700", example: "I might yawn", bgColor: "bg-yellow-50" },
+    { type: 'lesson', letter: "Z", word: "Zebra", translation: "حمار وحشي", icon: "fa-horse", color: "text-zinc-600", example: "Stripes on a zebra", bgColor: "bg-zinc-50" },
+    
+    // --- قسم الفواكه ---
     { type: 'section', title: "Fruits", subtitle: "الفواكه اللذيذة", bgColor: "bg-green-50", icon: "fa-carrot" },
     { type: 'lesson', word: "Banana", translation: "موز", icon: "fa-moon", customIconRotate: true, color: "text-yellow-500", example: "Yellow Banana", bgColor: "bg-yellow-50" },
     { type: 'lesson', word: "Orange", translation: "برتقال", icon: "fa-lemon", color: "text-orange-500", example: "Juicy Orange", bgColor: "bg-orange-50" },
     { type: 'lesson', word: "Strawberry", translation: "فراولة", icon: "fa-heart", color: "text-red-600", example: "Sweet Strawberry", bgColor: "bg-red-50" },
     { type: 'lesson', word: "Watermelon", translation: "بطيخ", icon: "fa-pizza-slice", color: "text-green-600", example: "Big Watermelon", bgColor: "bg-green-50" },
+
+    // --- قسم الحيوانات ---
     { type: 'section', title: "Animals", subtitle: "حيوانات المزرعة والغابة", bgColor: "bg-amber-50", icon: "fa-hippo" },
-    { type: 'lesson', word: "Dog", translation: "كلب", icon: "fa-dog", color: "text-amber-700", example: "A friendly dog", bgColor: "bg-amber-100" },
     { type: 'lesson', word: "Elephant", translation: "فيل", icon: "fa-paw", color: "text-gray-500", example: "A big elephant", bgColor: "bg-gray-50" },
-    { type: 'lesson', word: "Bird", translation: "طائر", icon: "fa-crow", color: "text-sky-500", example: "A singing bird", bgColor: "bg-sky-100" },
+    { type: 'lesson', word: "Mouse", translation: "فأر", icon: "fa-mouse", color: "text-slate-600", example: "A tiny mouse", bgColor: "bg-slate-50" },
+
+    // --- قسم الألوان ---
     { type: 'section', title: "Colors", subtitle: "ما هي ألوان قوس قزح؟", bgColor: "bg-pink-50", icon: "fa-palette" },
     { type: 'color', word: "Red", translation: "أحمر", colorClass: "bg-red-600", example: "The apple is red", bgColor: "bg-red-50" },
     { type: 'color', word: "Blue", translation: "أزرق", colorClass: "bg-blue-600", example: "The sky is blue", bgColor: "bg-blue-50" },
     { type: 'color', word: "Yellow", translation: "أصفر", colorClass: "bg-yellow-500", example: "The sun is yellow", bgColor: "bg-yellow-50" },
+    
+    // --- قسم الأرقام ---
     { type: 'section', title: "Numbers", subtitle: "لنعد معاً من 1 إلى 5", bgColor: "bg-purple-50", icon: "fa-arrow-up-1-9" },
     { type: 'number', number: "1", word: "One", translation: "واحد", color: "text-purple-600", example: "One star", bgColor: "bg-purple-50" },
     { type: 'number', number: "2", word: "Two", translation: "اثنان", color: "text-pink-600", example: "Two eyes", bgColor: "bg-pink-50" },
@@ -129,6 +166,7 @@ const pages = [
     { type: 'number', number: "4", word: "Four", translation: "أربعة", color: "text-teal-600", example: "Four legs", bgColor: "bg-teal-50" },
     { type: 'number', number: "5", word: "Five", translation: "خمسة", color: "text-blue-600", example: "Five fingers", bgColor: "bg-blue-50" },
 
+    // --- النهاية ---
     {
         type: 'end',
         title: "Good Job!",
@@ -140,225 +178,393 @@ const pages = [
 
 let currentPageIndex = 0;
 
-// ==============================
-// 2. دالة العرض (المنطق الرئيسي)
-// ==============================
-function renderPage() {
-    const contentDiv = document.getElementById('book-content');
-    const card = document.getElementById('book-card');
-    const controlsDiv = document.getElementById('controls');
-    const page = pages[currentPageIndex];
+// ==============================================
+// 2. الثوابت وعناصر DOM
+// ==============================================
+const totalPages = pages.length;
+const contentDiv = document.getElementById('book-content');
+const card = document.getElementById('book-card');
+const controlsDiv = document.getElementById('controls');
+const pageNumSpan = document.getElementById('page-num');
+const totalPagesSpan = document.getElementById('total-pages');
+const btnPrev = document.getElementById('btn-prev');
+const btnNext = document.getElementById('btn-next');
 
-    document.getElementById('page-num').innerText = currentPageIndex + 1;
-    document.getElementById('total-pages').innerText = pages.length;
-    document.getElementById('btn-prev').disabled = currentPageIndex === 0;
-    document.getElementById('btn-next').disabled = currentPageIndex === pages.length - 1;
+// ==============================================
+// 3. دوال عرض المحتوى لكل نوع صفحة (للتنظيم)
+// ==============================================
 
-    const isControlVisible = page.type !== 'end';
-    controlsDiv.style.display = isControlVisible ? 'flex' : 'none';
-    
-    card.className = card.className.replace(/bg-\w+-\d+/g, ''); 
-    card.classList.add('max-w-2xl', 'w-full', 'bg-white', 'rounded-3xl', 'shadow-2xl', 'overflow-hidden', 'border-8', 'border-yellow-400', 'flex', 'flex-col', 'transition-all', 'duration-500', 'relative', page.bgColor);
+/**
+ * يعرض صفحة الغلاف.
+ * @param {object} page - بيانات الصفحة.
+ */
+function renderCover(page) {
+    const iconClass = page.icon || 'fa-book';
+    const colorClass = page.color || 'text-gray-500';
+    const authorName = page.authorName || 'المؤلف غير معروف';
+    const whatsapp = page.whatsapp || '#';
+    const supervisor = page.supervisor || 'لا يوجد إشراف';
+    const supervisorPhone = page.supervisorPhone || '0000000000';
 
-    let html = `<div class="pop-in w-full flex flex-col items-center">`;
+    return `
+        <div class="mb-4 animate-bounce">
+            <i class="fas ${iconClass} text-9xl ${colorClass} drop-shadow-md"></i>
+        </div>
+        <h1 class="text-6xl font-bold text-blue-600 mb-2 eng-text">${page.title || 'My Book'}</h1>
+        <p class="text-xl text-gray-600 font-bold mb-8">${page.subtitle || 'كتاب تعليمي'}</p>
+        
+        <!-- حاوية المعلومات السفلية -->
+        <div class="w-full bg-white/60 rounded-xl p-4 border-t-2 border-yellow-300 backdrop-blur-sm">
+            <div class="grid grid-cols-1 gap-4 divide-y divide-yellow-200">
+                
+                <!-- قسم المشرفة -->
+                <div class="pb-2">
+                    <p class="text-lg font-bold text-gray-700">${supervisor}</p>
+                    <a href="tel:${supervisorPhone}" class="text-sm text-gray-500 flex items-center justify-center gap-2 mt-1 hover:text-blue-600 transition" dir="ltr">
+                        <span class="font-mono text-lg">${supervisorPhone}</span> <i class="fas fa-phone text-gray-400"></i> 
+                    </a>
+                </div>
 
-    // --- 0. قالب الغلاف (معدل) ---
-    if (page.type === "cover") {
-        html += `
-            <div class="mb-4 animate-bounce">
-                <i class="fas ${page.icon} text-9xl ${page.color} drop-shadow-md"></i>
-            </div>
-            <h1 class="text-6xl font-bold text-blue-600 mb-2 eng-text">${page.title}</h1>
-            <p class="text-xl text-gray-600 font-bold mb-8">${page.subtitle}</p>
-            
-            <!-- حاوية المعلومات السفلية -->
-            <div class="w-full bg-white/60 rounded-xl p-4 border-t-2 border-yellow-300 backdrop-blur-sm">
-                <div class="grid grid-cols-1 gap-4 divide-y divide-yellow-200">
-                    
-                    <!-- قسم المشرفة -->
-                    <div class="pb-2">
-                        <p class="text-lg font-bold text-gray-700">${page.supervisor}</p>
-                        <p class="text-sm text-gray-500 flex items-center justify-center gap-2 mt-1" dir="ltr">
-                            <span class="font-mono">${page.supervisorPhone}</span> <i class="fas fa-phone text-gray-400"></i> 
-                        </p>
-                    </div>
-
-                    <!-- قسم المؤلف (تم تغيير النص هنا) -->
-                    <div class="pt-2">
-                        <p class="text-sm text-gray-500 mb-1">تأليف وتصميم:</p> 
-                        <p class="text-xl font-bold text-blue-800">${page.authorName}</p>
-                        <p class="text-sm text-gray-500 flex items-center justify-center gap-2 mt-1" dir="ltr">
-                             <span class="font-mono">${page.whatsapp}</span> <i class="fab fa-whatsapp text-green-500"></i>
-                        </p>
-                    </div>
-
+                <!-- قسم المؤلف -->
+                <div class="pt-2">
+                    <p class="text-sm text-gray-500 mb-1">تأليف وتصميم:</p> 
+                    <p class="text-xl font-bold text-blue-800">${authorName}</p>
+                    <a href="https://wa.me/${whatsapp.replace('+', '')}" target="_blank" class="text-sm text-gray-500 flex items-center justify-center gap-2 mt-1 hover:text-green-600 transition" dir="ltr">
+                         <span class="font-mono text-lg">${whatsapp}</span> <i class="fab fa-whatsapp text-green-500 text-xl"></i>
+                    </a>
                 </div>
             </div>
-        `;
-    }
-
-    // --- 1. قالب المقدمة ---
-    else if (page.type === "introduction") {
-        html += `
-            <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-6">
-                <i class="fas fa-book-reader text-6xl text-teal-600"></i>
-            </div>
-            <h2 class="text-5xl font-bold text-teal-700 mb-4">${page.arabicTitle}</h2>
-            <p class="text-xl text-gray-600 max-w-md">
-                هذا الكتاب هو دليلك الأول لاكتشاف المفردات الإنجليزية الأساسية بطريقة ممتعة وتفاعلية. ستجد هنا الحروف، الأرقام، أسماء الفواكه، الحيوانات، والألوان، مدعومة بالنطق الصحيح لمساعدتك على التعلم السريع!
-            </p>
-        `;
-    }
-
-    // --- 2. قالب الفهرس ---
-    else if (page.type === "index") {
-        const sections = pages.slice(3).filter(p => p.type === 'section').map(p => ({
-            title: p.title,
-            icon: p.icon,
-            bgColor: p.bgColor.replace('-50', '-100')
-        }));
-
-        let indexList = sections.map(section => `
-            <li class="p-3 ${section.bgColor} rounded-xl flex items-center gap-4 shadow-sm">
-                <i class="fas ${section.icon} text-xl text-gray-700 w-6 text-center"></i>
-                <span class="text-xl font-semibold eng-text text-gray-800">${section.title}</span>
-            </li>
-        `).join('');
-
-        html += `
-            <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-6">
-                <i class="fas fa-list-ol text-6xl text-pink-600"></i>
-            </div>
-            <h2 class="text-5xl font-bold text-pink-700 mb-8">${page.arabicTitle}</h2>
-            <ul class="space-y-4 w-full max-w-xs md:max-w-md">
-                ${indexList}
-            </ul>
-        `;
-    }
-
-    // --- 3. قالب الفاصل (عنوان القسم) ---
-    else if (page.type === "section") {
-        html += `
-            <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-6">
-                <i class="fas ${page.icon} text-6xl text-gray-700"></i>
-            </div>
-            <h2 class="text-5xl font-bold text-gray-800 mb-4 eng-text">${page.title}</h2>
-            <p class="text-2xl text-gray-500">${page.subtitle}</p>
-        `;
-    }
-
-    // --- 4. قالب الدرس (فواكه / حروف / حيوانات) ---
-    else if (page.type === "lesson") {
-        const rotateClass = page.customIconRotate ? '-rotate-45' : '';
-        html += `
-            <div onclick="speak('${page.word}')" class="bg-white w-48 h-48 rounded-full shadow-xl mb-6 flex items-center justify-center border-4 border-dashed border-gray-200 cursor-pointer hover:scale-105 transition-transform">
-                <i class="fas ${page.icon} text-8xl ${page.color} ${rotateClass}"></i>
-            </div>
-
-            <h2 onclick="speak('${page.word}')" class="text-6xl font-bold text-gray-800 mb-2 eng-text cursor-pointer hover:text-blue-500 transition">
-                ${page.word} <i class="fas fa-volume-high text-2xl text-gray-400"></i>
-            </h2>
-            <p class="text-3xl text-gray-500 font-bold mb-8">${page.translation}</p>
-
-            <div onclick="speak('${page.example}')" class="bg-white/60 px-8 py-3 rounded-2xl cursor-pointer hover:bg-white transition">
-                <p class="text-xl text-gray-600 eng-text">"${page.example}"</p>
-            </div>
-        `;
-    }
-
-    // --- 5. قالب الألوان ---
-    else if (page.type === "color") {
-        html += `
-            <div onclick="speak('${page.word}')" class="w-48 h-48 ${page.colorClass} rounded-full shadow-2xl mb-6 flex items-center justify-center border-8 border-white ring-4 ring-offset-2 ring-current cursor-pointer hover:scale-105 transition-transform duration-300">
-                <i class="fas fa-palette text-5xl text-white opacity-80"></i>
-            </div>
-
-            <h2 onclick="speak('${page.word}')" class="text-6xl font-bold text-gray-800 mb-2 eng-text cursor-pointer hover:text-blue-500 transition">
-                ${page.word} <i class="fas fa-volume-high text-2xl text-gray-400"></i>
-            </h2>
-            <p class="text-3xl text-gray-500 font-bold mb-8">${page.translation}</p>
-
-            <div onclick="speak('${page.example}')" class="bg-white/60 px-8 py-3 rounded-2xl cursor-pointer hover:bg-white transition">
-                <p class="text-xl text-gray-600 eng-text">"${page.example}"</p>
-            </div>
-        `;
-    }
-
-    // --- 6. قالب الأرقام ---
-    else if (page.type === "number") {
-        html += `
-            <div onclick="speak('${page.word}')" class="relative group cursor-pointer mb-6">
-                <!-- عرض الرقم بشكل كبير جداً -->
-                <span class="text-[150px] font-bold ${page.color} eng-text leading-none drop-shadow-sm group-hover:scale-110 transition-transform block">
-                    ${page.number}
-                </span>
-            </div>
-
-            <h2 onclick="speak('${page.word}')" class="text-5xl font-bold text-gray-800 mb-2 eng-text cursor-pointer hover:text-blue-500">
-                ${page.word} <i class="fas fa-volume-high text-2xl text-gray-400"></i>
-            </h2>
-            <p class="text-3xl text-gray-500 font-bold mb-6">${page.translation}</p>
-            
-            <div onclick="speak('${page.example}')" class="bg-white px-6 py-2 rounded-lg shadow-sm cursor-pointer">
-                <p class="text-lg text-gray-500 eng-text">${page.example}</p>
-            </div>
-        `;
-    }
-
-
-    // --- 7. صفحة النهاية ---
-    else if (page.type === "end") {
-        html += `
-            <i class="fas fa-trophy text-8xl text-yellow-500 mb-6 animate-pulse"></i>
-            <h1 class="text-5xl font-bold text-green-600 mb-4 eng-text">${page.title}</h1>
-            <p class="text-xl text-gray-600 mb-8">${page.subtitle}</p>
-            <button onclick="restartBook()" class="bg-green-500 text-white px-8 py-3 rounded-full text-lg font-bold shadow hover:bg-green-600 transition">
-                اقرأ مرة أخرى ↻
-            </button>
-        `;
-    }
-
-
-    html += `</div>`;
-    contentDiv.innerHTML = html;
+        </div>
+    `;
 }
 
-// ==============================
-// 3. دوال التحكم
-// ==============================
+/**
+ * يعرض صفحة المقدمة.
+ * @param {object} page - بيانات الصفحة.
+ */
+function renderIntroduction(page) {
+    return `
+        <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-6">
+            <i class="fas fa-book-reader text-6xl text-teal-600"></i>
+        </div>
+        <h2 class="text-5xl font-bold text-teal-700 mb-4">${page.arabicTitle || 'مرحباً'}</h2>
+        <p class="text-xl text-gray-600 max-w-md">
+            هذا الكتاب هو دليلك الأول لاكتشاف المفردات الإنجليزية الأساسية بطريقة ممتعة وتفاعلية. ستجد هنا الحروف، الأرقام، أسماء الفواكه، الحيوانات، والألوان، مدعومة بالنطق الصحيح لمساعدتك على التعلم السريع!
+        </p>
+    `;
+}
 
+/**
+ * يعرض صفحة الفهرس.
+ */
+function renderIndex() {
+    // يستخرج الأقسام لإنشاء قائمة الفهرس ديناميكياً
+    const sections = pages.filter(p => p.type === 'section').map(p => ({
+        title: p.title || 'قسم',
+        icon: p.icon || 'fa-circle-dot',
+        bgColor: p.bgColor ? p.bgColor.replace('-50', '-100') : 'bg-gray-100'
+    }));
+
+    const indexList = sections.map(section => `
+        <li class="p-3 ${section.bgColor} rounded-xl flex items-center gap-4 shadow-sm">
+            <i class="fas ${section.icon} text-xl text-gray-700 w-6 text-center"></i>
+            <span class="text-xl font-semibold eng-text text-gray-800">${section.title}</span>
+        </li>
+    `).join('');
+
+    return `
+        <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-6">
+            <i class="fas fa-list-ol text-6xl text-pink-600"></i>
+        </div>
+        <h2 class="text-5xl font-bold text-pink-700 mb-8">فهرس الكتاب</h2>
+        <ul class="space-y-4 w-full max-w-xs md:max-w-md">
+            ${indexList}
+        </ul>
+    `;
+}
+
+/**
+ * يعرض فاصل القسم (عنوان قسم جديد).
+ * @param {object} page - بيانات الصفحة.
+ */
+function renderSection(page) {
+    const iconClass = page.icon || 'fa-ellipsis';
+    const title = page.title || 'قسم جديد';
+    const subtitle = page.subtitle || 'لا يوجد عنوان فرعي';
+    return `
+        <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg mb-6">
+            <i class="fas ${iconClass} text-6xl text-gray-700"></i>
+        </div>
+        <h2 class="text-5xl font-bold text-gray-800 mb-4 eng-text">${title}</h2>
+        <p class="text-2xl text-gray-500">${subtitle}</p>
+    `;
+}
+
+/**
+ * يعرض صفحة الدرس (الحروف والكلمات).
+ * @param {object} page - بيانات الصفحة.
+ */
+function renderLesson(page) {
+    const rotateClass = page.customIconRotate ? '-rotate-45' : '';
+    const letterDisplay = page.letter ? 
+        `<div class="text-9xl font-extrabold ${page.color || 'text-gray-600'} eng-text mb-4 leading-none">${page.letter}</div>` : 
+        ''; 
+    const word = page.word || 'Word';
+    const iconClass = page.icon || 'fa-star';
+    const colorClass = page.color || 'text-gray-500';
+    const translation = page.translation || 'ترجمة';
+    const example = page.example || 'مثال';
+
+    return `
+        ${letterDisplay}
+
+        <div onclick="speak('${word}')" class="lesson-icon-card bg-white w-48 h-48 rounded-full shadow-xl mb-6 flex items-center justify-center border-4 border-dashed border-gray-200 cursor-pointer hover:scale-105 transition-transform">
+            <i class="fas ${iconClass} text-8xl ${colorClass} ${rotateClass}"></i>
+        </div>
+
+        <h2 onclick="speak('${word}')" class="text-6xl font-bold text-gray-800 mb-2 eng-text cursor-pointer hover:text-blue-500 transition">
+            ${word} <i class="fas fa-volume-high text-2xl text-gray-400"></i>
+        </h2>
+        <p class="text-3xl text-gray-500 font-bold mb-8">${translation}</p>
+
+        <div onclick="speak('${example}')" class="bg-white/60 px-8 py-3 rounded-2xl cursor-pointer hover:bg-white transition">
+            <p class="text-xl text-gray-600 eng-text">"${example}"</p>
+        </div>
+    `;
+}
+
+/**
+ * يعرض صفحة اللون.
+ * @param {object} page - بيانات الصفحة.
+ */
+function renderColor(page) {
+    const word = page.word || 'Color';
+    const colorClass = page.colorClass || 'bg-gray-500';
+    const translation = page.translation || 'لون';
+    const example = page.example || 'مثال جملة';
+
+    return `
+        <div onclick="speak('${word}')" class="w-48 h-48 ${colorClass} rounded-full shadow-2xl mb-6 flex items-center justify-center border-8 border-white ring-4 ring-offset-2 ring-current cursor-pointer hover:scale-105 transition-transform duration-300">
+            <i class="fas fa-palette text-5xl text-white opacity-80"></i>
+        </div>
+
+        <h2 onclick="speak('${word}')" class="text-6xl font-bold text-gray-800 mb-2 eng-text cursor-pointer hover:text-blue-500 transition">
+            ${word} <i class="fas fa-volume-high text-2xl text-gray-400"></i>
+        </h2>
+        <p class="text-3xl text-gray-500 font-bold mb-8">${translation}</p>
+
+        <div onclick="speak('${example}')" class="bg-white/60 px-8 py-3 rounded-2xl cursor-pointer hover:bg-white transition">
+            <p class="text-xl text-gray-600 eng-text">"${example}"</p>
+        </div>
+    `;
+}
+
+/**
+ * يعرض صفحة الرقم.
+ * @param {object} page - بيانات الصفحة.
+ */
+function renderNumber(page) {
+    const number = page.number || '0';
+    const word = page.word || 'Zero';
+    const colorClass = page.color || 'text-gray-600';
+    const translation = page.translation || 'صفر';
+    const example = page.example || 'مثال عدد';
+
+    return `
+        <div onclick="speak('${word}')" class="relative group cursor-pointer mb-6">
+            <span class="text-[150px] font-bold ${colorClass} eng-text leading-none drop-shadow-sm group-hover:scale-110 transition-transform block">
+                ${number}
+            </span>
+        </div>
+
+        <h2 onclick="speak('${word}')" class="text-5xl font-bold text-gray-800 mb-2 eng-text cursor-pointer hover:text-blue-500">
+            ${word} <i class="fas fa-volume-high text-2xl text-gray-400"></i>
+        </h2>
+        <p class="text-3xl text-gray-500 font-bold mb-6">${translation}</p>
+        
+        <div onclick="speak('${example}')" class="bg-white px-6 py-2 rounded-lg shadow-sm cursor-pointer">
+            <p class="text-lg text-gray-500 eng-text">${example}</p>
+        </div>
+    `;
+}
+
+/**
+ * يعرض صفحة النهاية.
+ * @param {object} page - بيانات الصفحة.
+ */
+function renderEnd(page) {
+    const title = page.title || 'انتهى';
+    const subtitle = page.subtitle || 'شكراً لك.';
+    return `
+        <i class="fas fa-trophy text-8xl text-yellow-500 mb-6 animate-pulse"></i>
+        <h1 class="text-5xl font-bold text-green-600 mb-4 eng-text">${title}</h1>
+        <p class="text-xl text-gray-600 mb-8">${subtitle}</p>
+        <button onclick="restartBook()" class="bg-green-500 text-white px-8 py-3 rounded-full text-lg font-bold shadow hover:bg-green-600 transition">
+            اقرأ مرة أخرى ↻
+        </button>
+    `;
+}
+
+/**
+ * الدالة الرئيسية للحصول على محتوى HTML مع معالجة الأخطاء.
+ * @param {object} page - بيانات الصفحة الحالية.
+ * @returns {string} - محتوى HTML للصفحة أو رسالة خطأ.
+ */
+function getRenderedHtml(page) {
+    try {
+        let htmlContent = '';
+        const pageType = page.type;
+
+        // استخدم دالة العرض المناسبة بناءً على نوع الصفحة
+        switch (pageType) {
+            case 'cover':
+                htmlContent = renderCover(page);
+                break;
+            case 'introduction':
+                htmlContent = renderIntroduction(page);
+                break;
+            case 'index':
+                htmlContent = renderIndex(page);
+                break;
+            case 'section':
+                htmlContent = renderSection(page);
+                break;
+            case 'lesson':
+                htmlContent = renderLesson(page);
+                break;
+            case 'color':
+                htmlContent = renderColor(page);
+                break;
+            case 'number':
+                htmlContent = renderNumber(page);
+                break;
+            case 'end':
+                htmlContent = renderEnd(page);
+                break;
+            default:
+                // في حالة وجود نوع صفحة غير معرف، سجل الخطأ واستمر
+                console.error(`ERROR: Unknown page type: ${pageType}`);
+                htmlContent = `<div class="text-red-500 text-2xl font-bold">خطأ في الصفحة: نوع غير معروف (${pageType})</div>`;
+                break;
+        }
+
+        return `<div class="pop-in w-full flex flex-col items-center">${htmlContent}</div>`;
+
+    } catch (error) {
+        // في حالة حدوث أي خطأ برمجي أثناء عملية العرض، اعرض رسالة خطأ للمستخدم واستمر
+        console.error("CRITICAL RENDER ERROR:", error);
+        return `<div class="text-red-500 text-2xl font-bold">عذراً، حدث خطأ أثناء عرض محتوى هذه الصفحة. (انظر Console للمزيد من التفاصيل).</div>`;
+    }
+}
+
+// ==============================================
+// 4. دالة العرض (المنطق الرئيسي)
+// ==============================================
+function renderPage() {
+    try {
+        const page = pages[currentPageIndex];
+
+        // تحديث أرقام الصفحات
+        pageNumSpan.innerText = currentPageIndex + 1;
+        totalPagesSpan.innerText = totalPages;
+        
+        // تحديث حالة أزرار التنقل
+        btnPrev.disabled = currentPageIndex === 0;
+        btnNext.disabled = currentPageIndex === totalPages - 1;
+
+        // إظهار/إخفاء أزرار التحكم في صفحة النهاية
+        const isControlVisible = page.type !== 'end';
+        controlsDiv.style.display = isControlVisible ? 'flex' : 'none';
+        
+        // تحديث خلفية الكتاب
+        card.className = card.className.split(' ').filter(c => !c.startsWith('bg-')).join(' ');
+        card.classList.add('max-w-2xl', 'w-full', 'bg-white', 'rounded-3xl', 'shadow-2xl', 'overflow-hidden', 'border-8', 'border-yellow-400', 'flex', 'flex-col', 'transition-all', 'duration-500', 'relative', page.bgColor || 'bg-white');
+
+        // عرض محتوى الصفحة (باستخدام الدالة المحمية من الأخطاء)
+        contentDiv.innerHTML = getRenderedHtml(page);
+
+    } catch (error) {
+        // إذا فشلت الدالة الرئيسية للعرض (لسبب غير متوقع)، سجل الخطأ
+        console.error("FATAL ERROR in renderPage function:", error);
+    }
+}
+
+
+// ==============================================
+// 5. دوال التنقل ومعالجة الأخطاء
+// ==============================================
+
+/**
+ * ينتقل إلى الصفحة التالية.
+ */
 function nextPage() { 
-    if (currentPageIndex < pages.length - 1) { 
-        currentPageIndex++; 
-        renderPage(); 
-    } 
+    try {
+        if (currentPageIndex < totalPages - 1) { 
+            currentPageIndex++; 
+            renderPage(); 
+        } 
+    } catch (error) {
+        console.error("Error navigating to next page:", error);
+    }
 }
 
+/**
+ * ينتقل إلى الصفحة السابقة.
+ */
 function prevPage() { 
-    if (currentPageIndex > 0) { 
-        currentPageIndex--; 
-        renderPage(); 
-    } 
+    try {
+        if (currentPageIndex > 0) { 
+            currentPageIndex--; 
+            renderPage(); 
+        } 
+    } catch (error) {
+        console.error("Error navigating to previous page:", error);
+    }
 }
 
+/**
+ * يبدأ الكتاب من جديد.
+ */
 function restartBook() { 
-    currentPageIndex = 0;
-    renderPage(); 
+    try {
+        currentPageIndex = 0;
+        renderPage(); 
+    } catch (error) {
+        console.error("Error restarting book:", error);
+    }
 }
 
-// دالة النطق الإنجليزي
+/**
+ * دالة النطق الإنجليزي المحمية.
+ * @param {string} text - النص المراد نطقه.
+ */
 function speak(text) {
-    if(!text) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "en-US";
-    u.rate = 0.8; 
-    window.speechSynthesis.speak(u);
+    try {
+        if (!text || typeof text !== 'string') {
+            console.warn("Attempted to speak invalid text:", text);
+            return;
+        }
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = "en-US"; 
+        u.rate = 0.8; 
+        window.speechSynthesis.speak(u);
+    } catch (error) {
+        // في حالة فشل النطق (غالباً بسبب قيود المتصفح أو عدم توفر API)
+        console.error("Speech Synthesis Failed:", error);
+        // البرنامج لن يتوقف، سيسجل الخطأ ويكمل التنفيذ
+    }
 }
 
+// ==============================================
+// 6. تهيئة التطبيق عند التحميل
+// ==============================================
 window.onload = function() {
-    currentPageIndex = 0;
-    renderPage();
+    try {
+        renderPage();
+    } catch (error) {
+        console.error("Initialization Failed:", error);
+    }
 };
 
 </script>
